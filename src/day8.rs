@@ -53,10 +53,10 @@ impl Pyramid {
 
     pub fn column_heights(&self) -> Vec<u128> {
         let width = self.rows[self.rows.len() - 1] as usize;
-        let mut columnwise = Vec::with_capacity(width as usize);
+        let mut columnwise = Vec::with_capacity(width);
         let half_width = width / 2;
         for i in 0..width {
-            let idx = (i as i32 - half_width as i32).abs() as usize;
+            let idx = (i as i32 - half_width as i32).unsigned_abs() as usize;
             columnwise.push(self.column_heights[idx])
         }
         columnwise
@@ -69,12 +69,12 @@ impl Pyramid {
         if columnwise.len() == 1 {
             return 0;
         }
-        let correct = columnwise
+        
+        columnwise
             .into_iter()
             .skip(1) // outermost blocks are always filled
             .take(base_width as usize - 2)
-            .fold(0, |acc, x| ((first_line * x) % 10) + acc);
-        correct
+            .fold(0, |acc, x| ((first_line * x) % 10) + acc)
     }
 }
 
@@ -101,7 +101,7 @@ impl Solution<u128> for Day8 {
         }
         let diff = pyramid.sum - blocks;
         let width = pyramid.rows[pyramid.rows.len() - 1];
-        return Some(width * diff);
+        Some(width * diff)
     }
 
     fn part3(&self, input: &str) -> Option<u128> {
@@ -113,7 +113,7 @@ impl Solution<u128> for Day8 {
             pyramid.add_row_p3(parsed);
         }
         let diff = pyramid.sum - blocks - pyramid.empty_blocks(parsed);
-        return Some(diff);
+        Some(diff)
     }
 }
 

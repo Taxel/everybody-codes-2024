@@ -19,7 +19,7 @@ fn get_match_mask(line: &str, words: &[&str], is_ring: bool) -> Vec<bool> {
         // idea: rotate through line and mask simultaneously, always checking if the first chars are correct
         let word_len = word.len();
         for _i in 0..line.len() {
-            if line.iter().take(word_len).map(|c| *c).eq(word.chars()) {
+            if line.iter().take(word_len).copied().eq(word.chars()) {
                 // mark first word_len entries in mask as found
 
                 for j in 0..word_len {
@@ -28,8 +28,7 @@ fn get_match_mask(line: &str, words: &[&str], is_ring: bool) -> Vec<bool> {
             } else if line
                 .iter()
                 .take(word_len)
-                .rev()
-                .map(|c| *c)
+                .rev().copied()
                 .eq(word.chars())
             {
                 // reversed word found
@@ -55,9 +54,7 @@ impl Solution<i32> for Day2 {
         let words = lines
             .next()
             .unwrap()
-            .split(':')
-            .skip(1)
-            .next()
+            .split(':').nth(1)
             .unwrap()
             .split(',')
             .collect::<Vec<&str>>();
@@ -78,9 +75,7 @@ impl Solution<i32> for Day2 {
         let words = lines
             .next()
             .unwrap()
-            .split(':')
-            .skip(1)
-            .next()
+            .split(':').nth(1)
             .unwrap()
             .split(',')
             .collect::<Vec<&str>>();
@@ -100,9 +95,7 @@ impl Solution<i32> for Day2 {
         let words = lines
             .next()
             .unwrap()
-            .split(':')
-            .skip(1)
-            .next()
+            .split(':').nth(1)
             .unwrap()
             .split(',')
             .collect::<Vec<&str>>();

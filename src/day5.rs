@@ -31,7 +31,7 @@ impl Day5World {
     /// One step, returns the shouted number at the end
     fn dance(&mut self) -> String {
         // remove first clapper from current column
-        let mut clapper = self.columns[self.current_dancing_column]
+        let clapper = self.columns[self.current_dancing_column]
             .pop_front()
             .unwrap();
         // increment current_dancing_column immediately, this is where the clapper will be inserted
@@ -46,11 +46,11 @@ impl Day5World {
             self.columns[self.current_dancing_column].insert(1, clapper);
         } else if clapper_idx <= current_column_len {
             // insert at index clapper-1
-            self.columns[self.current_dancing_column].insert(clapper_idx as usize - 1, clapper);
+            self.columns[self.current_dancing_column].insert(clapper_idx - 1, clapper);
         } else {
             // insert at index clapper - current_column_len
             self.columns[self.current_dancing_column].insert(
-                current_column_len - (clapper_idx - current_column_len - 1) as usize,
+                current_column_len - (clapper_idx - current_column_len - 1),
                 clapper,
             );
         }
@@ -181,7 +181,7 @@ mod test {
 4 5 2 3
 5 2 3 4"#;
 
-        let mut solution = get_solution();
+        let solution = get_solution();
         assert_eq!(solution.part1(test_input), Some("2323".to_string()));
     }
 
@@ -189,7 +189,7 @@ mod test {
     fn test_part2() {
         let test_input = r#"2 3 4 5
 6 7 8 9"#;
-        let mut solution = get_solution();
+        let solution = get_solution();
         assert_eq!(solution.part2(test_input), Some("50877075".to_string()));
     }
 

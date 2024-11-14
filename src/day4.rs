@@ -12,7 +12,7 @@ impl Solution<i32> for Day4 {
             .lines()
             .map(|l| l.parse::<i32>().unwrap())
             .collect::<Vec<_>>();
-        let min = nums.iter().min().unwrap().clone();
+        let min = *nums.iter().min().unwrap();
         Some(nums.into_iter().map(|n| n - min).sum())
     }
 
@@ -82,6 +82,6 @@ mod test {
 5
 6
 8"#;
-        assert_eq!(d4.part3(&input), Some(8))
+        assert_eq!(d4.part3(input), Some(8))
     }
 }

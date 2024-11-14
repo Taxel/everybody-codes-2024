@@ -64,7 +64,7 @@ impl Solution<i32> for Day3 {
     const DAY: usize = 3;
 
     fn part1(&self, input: &str) -> Option<i32> {
-        let mut lines = input.lines().collect::<Vec<&str>>();
+        let lines = input.lines().collect::<Vec<&str>>();
         let width = lines[0].len();
         let height = lines.len();
         let mut grid = vec![0; width * height];
@@ -89,7 +89,7 @@ impl Solution<i32> for Day3 {
     }
 
     fn part3(&self, input: &str) -> Option<i32> {
-        let mut lines = input.lines().collect::<Vec<&str>>();
+        let lines = input.lines().collect::<Vec<&str>>();
         let width = lines[0].len();
         let height = lines.len();
         let mut grid = vec![0; width * height];

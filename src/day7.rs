@@ -212,7 +212,7 @@ impl Day7World {
     fn track_from_ascii(ascii_track: &str) -> Vec<Instruction> {
         // first, we collect the chars into a vec (for easier indexing) and determine the dimensions of this 2d grid
         let mut instructions: Vec<Option<Instruction>> = Vec::with_capacity(ascii_track.len());
-        let mut width = ascii_track.lines().map(|l| l.len()).max().unwrap();
+        let width = ascii_track.lines().map(|l| l.len()).max().unwrap();
         let mut height = 0;
         let mut track = Vec::new();
         for line in ascii_track.lines() {
@@ -288,11 +288,7 @@ impl FromStr for Day7World {
             .map(|l| l.parse().unwrap())
             .collect();
 
-        let track = if let Some(track_ascii) = split.next() {
-            Some(Self::track_from_ascii(track_ascii))
-        } else {
-            None
-        };
+        let track = split.next().map(Self::track_from_ascii);
         Ok(Self {
             chariots,
             current_segment: 0,
@@ -339,7 +335,7 @@ impl Solution<String> for Day7 {
                 power: 10,
                 essence_collected: 0,
                 instruction_idx: 0,
-                plan: plan,
+                plan,
             }));
 
         println!("Starting loop. Total chariots: {}", world.chariots.len());

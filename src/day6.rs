@@ -1,13 +1,9 @@
-use std::{
-    collections::{HashMap, HashSet},
-    path,
-    str::FromStr,
-};
+use std::collections::{HashMap, HashSet};
 
 use itertools::Itertools;
 
 // Template for new days
-use crate::solution::{self, Solution};
+use crate::solution::{Solution};
 
 pub struct Day6;
 
