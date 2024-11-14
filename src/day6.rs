@@ -207,18 +207,4 @@ H:@"#;
         let solution = get_solution();
         assert_eq!(solution.part1(test_input), Some("RRB@".to_string()));
     }
-
-    #[test]
-    fn test_part2() {
-        let solution = get_solution();
-        let test_input = r#""#;
-        assert_eq!(solution.part2(test_input), None);
-    }
-
-    #[test]
-    fn test_part3() {
-        let solution = get_solution();
-        let test_input = r#""#;
-        assert_eq!(solution.part3(test_input), None);
-    }
 }

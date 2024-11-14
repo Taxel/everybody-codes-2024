@@ -8,6 +8,7 @@ mod day3;
 mod day4;
 mod day5;
 mod day6;
+mod day7;
 pub mod solution;
 
 fn get_input(day: usize, part: usize) -> Option<String> {
@@ -48,6 +49,6 @@ fn run_day<T: std::fmt::Debug>(solution: impl Solution<T>) {
 }
 
 fn main() {
-    let today = day6::Day6;
+    let today = day7::Day7;
     run_day(today);
 }
