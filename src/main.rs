@@ -2,17 +2,18 @@ use std::time::Instant;
 
 use solution::Solution;
 
-mod day1;
-mod day2;
-mod day3;
-mod day4;
+// mod day1;
+// mod day2;
+// mod day3;
+// mod day4;
+mod day5;
 pub mod solution;
 
 fn get_input(day: usize, part: usize) -> Option<String> {
     let path = format!("input/{:0>2}_p{}.txt", day, part);
     std::fs::read_to_string(path).ok()
 }
-fn run_part<T: std::fmt::Debug>(solution: &impl Solution<T>, part: usize) {
+fn run_part<T: std::fmt::Debug>(solution: &mut impl Solution<T>, part: usize) {
     let now = Instant::now();
     let day = solution.get_day();
     let input = get_input(day, part);
@@ -39,13 +40,13 @@ fn run_part<T: std::fmt::Debug>(solution: &impl Solution<T>, part: usize) {
     }
 }
 
-fn run_day<T: std::fmt::Debug>(solution: impl Solution<T>) {
-    run_part(&solution, 1);
-    run_part(&solution, 2);
-    run_part(&solution, 3);
+fn run_day<T: std::fmt::Debug>(mut solution: impl Solution<T>) {
+    run_part(&mut solution, 1);
+    run_part(&mut solution, 2);
+    run_part(&mut solution, 3);
 }
 
 fn main() {
-    let today = day4::Day4;
+    let today = day5::Day5::new();
     run_day(today);
 }
