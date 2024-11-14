@@ -7,6 +7,7 @@ mod day2;
 mod day3;
 mod day4;
 mod day5;
+mod day6;
 pub mod solution;
 
 fn get_input(day: usize, part: usize) -> Option<String> {
