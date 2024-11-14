@@ -6,14 +6,16 @@ use std::{
 
 use crate::solution::Solution;
 
-pub struct Day5 {
+pub struct Day5;
+
+struct Day5World {
     // we need to insert at arbitrary positions and pop from the front
     // LinkedList sounds like a good choice, yet the rust API in the stdlib does not -> VecDeque
     columns: [VecDeque<usize>; 4],
     current_dancing_column: usize,
 }
 
-impl Day5 {
+impl Day5World {
     pub fn new() -> Self {
         Self {
             columns: [
@@ -59,7 +61,7 @@ impl Day5 {
     }
 }
 
-impl FromStr for Day5 {
+impl FromStr for Day5World {
     type Err = ();
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
@@ -83,7 +85,7 @@ impl FromStr for Day5 {
     }
 }
 
-impl Display for Day5 {
+impl Display for Day5World {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut i = 0;
         loop {
@@ -109,11 +111,11 @@ impl Display for Day5 {
 impl Solution<String> for Day5 {
     const DAY: usize = 5;
 
-    fn part1(&mut self, input: &str) -> Option<String> {
-        *self = input.parse::<Day5>().unwrap();
+    fn part1(&self, input: &str) -> Option<String> {
+        let mut world = input.parse::<Day5World>().unwrap();
         let mut res = String::new();
         for _i in 0..10 {
-            res = self.dance();
+            res = world.dance();
             //println!("{}: {}", i + 1, res);
             //println!("{}", self);
         }
@@ -121,13 +123,13 @@ impl Solution<String> for Day5 {
         Some(res)
     }
 
-    fn part2(&mut self, input: &str) -> Option<String> {
-        *self = input.parse::<Day5>().unwrap();
+    fn part2(&self, input: &str) -> Option<String> {
+        let mut world = input.parse::<Day5World>().unwrap();
 
         let mut shout_counts = HashMap::new();
         let mut round: u128 = 1;
         loop {
-            let shouted = self.dance();
+            let shouted = world.dance();
             let shouts = shout_counts
                 .entry(shouted.clone())
                 .and_modify(|c| *c += 1)
@@ -142,18 +144,17 @@ impl Solution<String> for Day5 {
             }
             round += 1;
         }
-        None
     }
 
-    fn part3(&mut self, input: &str) -> Option<String> {
+    fn part3(&self, input: &str) -> Option<String> {
         // let's for now just simulate 10_000_000 steps and find the maximum shouted number
         // not guaranteed to be the correct solution if cycle is longer, also probably really slow
         // cycle detection would certainly be better
         // but hey, this finished in under 2s in release mode, so does it really matter?
-        *self = input.parse::<Day5>().unwrap();
+        let mut world = input.parse::<Day5World>().unwrap();
         let mut max_shouted: u128 = 0;
         for i in 0..10_000_000 {
-            let shouted = self.dance();
+            let shouted = world.dance();
             let shouted = shouted.parse::<u128>().unwrap();
             if shouted > max_shouted {
                 max_shouted = shouted;
@@ -170,8 +171,8 @@ impl Solution<String> for Day5 {
 mod test {
     use super::*;
 
-    fn get_solution(input: &str) -> impl Solution<String> {
-        input.parse::<Day5>().unwrap()
+    fn get_solution() -> impl Solution<String> {
+        Day5
     }
 
     #[test]
@@ -181,7 +182,7 @@ mod test {
 4 5 2 3
 5 2 3 4"#;
 
-        let mut solution = get_solution(test_input);
+        let mut solution = get_solution();
         assert_eq!(solution.part1(test_input), Some("2323".to_string()));
     }
 
@@ -189,7 +190,7 @@ mod test {
     fn test_part2() {
         let test_input = r#"2 3 4 5
 6 7 8 9"#;
-        let mut solution = get_solution(test_input);
+        let mut solution = get_solution();
         assert_eq!(solution.part2(test_input), Some("50877075".to_string()));
     }
 
@@ -197,7 +198,7 @@ mod test {
     fn test_part3() {
         let test_input = r#"2 3 4 5
 6 7 8 9"#;
-        let mut solution = get_solution(test_input);
+        let mut solution = get_solution();
         assert_eq!(solution.part3(test_input), Some("6584".to_string()));
     }
 }

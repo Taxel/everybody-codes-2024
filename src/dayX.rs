@@ -29,8 +29,8 @@ mod test {
 
     #[test]
     fn test_part1() {
-        let solution = get_solution();
         let test_input = r#""#;
+        let solution = get_solution();
         assert_eq!(solution.part1(test_input), None);
     }
 
