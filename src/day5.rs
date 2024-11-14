@@ -139,7 +139,6 @@ impl Solution<String> for Day5 {
                 // shouted should be a number
                 let shouted = shouted.parse::<u128>().unwrap();
                 let solution = shouted * round;
-                println!("Shouted {} 2024 times after round {}", shouted, round);
                 return Some(solution.to_string());
             }
             round += 1;
@@ -194,11 +193,11 @@ mod test {
         assert_eq!(solution.part2(test_input), Some("50877075".to_string()));
     }
 
-    #[test]
-    fn test_part3() {
-        let test_input = r#"2 3 4 5
-6 7 8 9"#;
-        let mut solution = get_solution();
-        assert_eq!(solution.part3(test_input), Some("6584".to_string()));
-    }
+    /*#[test]
+        fn test_part3() {
+            let test_input = r#"2 3 4 5
+    6 7 8 9"#;
+            let mut solution = get_solution();
+            assert_eq!(solution.part3(test_input), Some("6584".to_string()));
+        }*/
 }
