@@ -1,4 +1,4 @@
-use std::str::FromStr;
+use std::{collections::HashSet, str::FromStr};
 
 use itertools::Itertools;
 
@@ -6,6 +6,42 @@ use itertools::Itertools;
 use crate::solution::Solution;
 
 pub struct Day7;
+
+fn generate_possible_plans() -> impl Iterator<Item = Vec<Instruction>> {
+    let mut plans = HashSet::new();
+    generate_plans_recursive(Vec::new(), &mut plans);
+    plans.into_iter()
+}
+
+fn generate_plans_recursive(current_plan: Vec<Instruction>, plans: &mut HashSet<Vec<Instruction>>) {
+    if current_plan.len() == 11 {
+        plans.insert(current_plan);
+        return;
+    }
+    let (add, subtract, maintain) = current_plan.iter().fold(
+        (0, 0, 0),
+        |(add, subtract, maintain), action| match action {
+            Instruction::AddOne => (add + 1, subtract, maintain),
+            Instruction::SubtractOne => (add, subtract + 1, maintain),
+            Instruction::Maintain => (add, subtract, maintain + 1),
+        },
+    );
+    if add < 5 {
+        let mut new_plan = current_plan.clone();
+        new_plan.push(Instruction::AddOne);
+        generate_plans_recursive(new_plan, plans);
+    }
+    if subtract < 3 {
+        let mut new_plan = current_plan.clone();
+        new_plan.push(Instruction::SubtractOne);
+        generate_plans_recursive(new_plan, plans);
+    }
+    if maintain < 3 {
+        let mut new_plan = current_plan.clone();
+        new_plan.push(Instruction::Maintain);
+        generate_plans_recursive(new_plan, plans);
+    }
+}
 
 #[derive(Debug, Copy, Clone, PartialEq, Eq)]
 enum Direction {
@@ -107,6 +143,8 @@ impl Chariot {
             Instruction::SubtractOne => self.power = self.power.saturating_sub(1),
             Instruction::Maintain => (),
         }
+        self.essence_collected += self.power;
+        self.instruction_idx = (self.instruction_idx + 1) % self.plan.len();
     }
 }
 
@@ -151,8 +189,6 @@ impl Day7World {
                 Instruction::Maintain => chariot.plan[chariot.instruction_idx],
             };
             chariot.apply_instruction(to_execute);
-            chariot.essence_collected += chariot.power;
-            chariot.instruction_idx = (chariot.instruction_idx + 1) % chariot.plan.len();
         }
         self.current_segment += 1;
         if let Some(track) = &self.track {
@@ -296,11 +332,9 @@ impl Solution<String> for Day7 {
 
     fn part3(&self, input: &str) -> Option<String> {
         let mut world = input.parse::<Day7World>().unwrap();
-        let action_plan = "+++++---===".chars().map(Instruction::from);
-        // TODO: generation is incredibly slow here although we only get 9241 unique permutations
         world
             .chariots
-            .extend(action_plan.permutations(11).unique().map(|plan| Chariot {
+            .extend(generate_possible_plans().map(|plan| Chariot {
                 name: "S".to_string(),
                 power: 10,
                 essence_collected: 0,
@@ -308,9 +342,11 @@ impl Solution<String> for Day7 {
                 plan: plan,
             }));
 
+        println!("Starting loop. Total chariots: {}", world.chariots.len());
         for _ in 0..2024 {
             world.run_loop();
         }
+        println!("Loop done");
         // how many did the first strategy collect?
         let to_beat = world.chariots[0].essence_collected;
         let strats_beating_1 = world
