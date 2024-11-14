@@ -5,3 +5,5 @@ edition = "2021"
 
 [dependencies]
 itertools = "0.13.0"
+
+[workspace]
