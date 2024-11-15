@@ -3,7 +3,7 @@ use std::collections::{HashMap, HashSet};
 use itertools::Itertools;
 
 // Template for new days
-use crate::solution::{Solution};
+use crate::solution::Solution;
 
 pub struct Day6;
 
@@ -75,16 +75,6 @@ impl<'a> Day6World<'a> {
                 child.parent = Some(parent);
             }
         }
-    }
-
-    pub fn depth_of(&self, node: &str) -> usize {
-        let mut depth = 0;
-        let mut current = node;
-        while let Some(parent) = self.tree.get(current).unwrap().parent {
-            depth += 1;
-            current = parent;
-        }
-        depth
     }
 
     pub fn path_to(&'a self, node: &'a str) -> Vec<&'a str> {

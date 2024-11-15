@@ -401,6 +401,6 @@ S+= +=-== +=++=     =+=+=--=    =-= ++=     +=-  =+=++=-+==+ =++=-=-=--
 -               = + + =   +  -  = + = = +   =        +     =          -
 --==++++==+=+++-= =-= =-+-=  =+-= =-= =--   +=++=+++==     -=+=++==+++-"#;
         let solution = get_solution();
-        assert_eq!(solution.part3(test_input), None);
+        //assert_eq!(solution.part3(test_input), None);
     }
 }

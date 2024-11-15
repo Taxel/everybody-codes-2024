@@ -5,9 +5,10 @@ use std::{
 };
 
 use crate::solution::Solution;
-
+use crate::utils::cycle_finder::CycleFinderExt;
 pub struct Day5;
 
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 struct Day5World {
     // we need to insert at arbitrary positions and pop from the front
     // LinkedList sounds like a good choice, yet the rust API in the stdlib does not -> VecDeque
@@ -16,18 +17,6 @@ struct Day5World {
 }
 
 impl Day5World {
-    pub fn new() -> Self {
-        Self {
-            columns: [
-                VecDeque::new(),
-                VecDeque::new(),
-                VecDeque::new(),
-                VecDeque::new(),
-            ],
-            current_dancing_column: 0,
-        }
-    }
-
     /// One step, returns the shouted number at the end
     fn dance(&mut self) -> String {
         // remove first clapper from current column
@@ -108,6 +97,16 @@ impl Display for Day5World {
     }
 }
 
+impl Iterator for Day5World {
+    type Item = (String, Self);
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let shouted = self.dance();
+        // yeah, cloning the state on each iteration is stupid. I just wanted to try the cycle finder, and it needs the entire state, not just the output
+        Some((shouted, self.clone()))
+    }
+}
+
 impl Solution<String> for Day5 {
     const DAY: usize = 5;
 
@@ -146,20 +145,13 @@ impl Solution<String> for Day5 {
     }
 
     fn part3(&self, input: &str) -> Option<String> {
-        // let's for now just simulate 10_000_000 steps and find the maximum shouted number
-        // not guaranteed to be the correct solution if cycle is longer, also probably really slow
-        // cycle detection would certainly be better
-        // but hey, this finished in under 2s in release mode, so does it really matter?
+        // an iterator returning a clone of itself on each iteration is not great. But this seemed like the quickest way to get the cycle finder to work, instead of just loopin 10_000_000 times
         let mut world = input.parse::<Day5World>().unwrap();
-        let mut max_shouted: u128 = 0;
-        for i in 0..10_000_000 {
-            let shouted = world.dance();
+        let mut max_shouted = 0;
+        for (shouted, world) in world.find_cycle() {
             let shouted = shouted.parse::<u128>().unwrap();
             if shouted > max_shouted {
                 max_shouted = shouted;
-            }
-            if i % 1_000_000 == 0 {
-                println!("Round {}: max shouted: {}", i, max_shouted);
             }
         }
         Some(max_shouted.to_string())

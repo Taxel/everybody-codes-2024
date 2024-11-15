@@ -4,7 +4,7 @@ pub struct Day3;
 
 /// Tries to dig the level provided as depth, return true if successful
 fn carve_deeper(
-    grid: &mut Vec<u16>,
+    grid: &mut [u16],
     depth: u16,
     width: usize,
     height: usize,
@@ -68,10 +68,10 @@ impl Solution<i32> for Day3 {
         let width = lines[0].len();
         let height = lines.len();
         let mut grid = vec![0; width * height];
-        for y in 0..height {
+        for (y, line) in lines.iter().enumerate().take(height) {
             for x in 0..width {
                 let idx = y * width + x;
-                if lines[y].chars().nth(x).unwrap() == '#' {
+                if line.chars().nth(x).unwrap() == '#' {
                     grid[idx] = 1;
                 }
             }
@@ -93,10 +93,10 @@ impl Solution<i32> for Day3 {
         let width = lines[0].len();
         let height = lines.len();
         let mut grid = vec![0; width * height];
-        for y in 0..height {
-            for x in 0..width {
+        for (y, line) in lines.iter().enumerate() {
+            for (x, c) in line.chars().enumerate() {
                 let idx = y * width + x;
-                if lines[y].chars().nth(x).unwrap() == '#' {
+                if c == '#' {
                     grid[idx] = 1;
                 }
             }

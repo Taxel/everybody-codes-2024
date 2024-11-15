@@ -1,7 +1,6 @@
 use std::time::Instant;
 
 use solution::Solution;
-
 mod day1;
 mod day2;
 mod day3;
@@ -10,7 +9,9 @@ mod day5;
 mod day6;
 mod day7;
 mod day8;
+mod day9;
 pub mod solution;
+mod utils;
 
 fn get_input(day: usize, part: usize) -> Option<String> {
     let path = format!("input/{:0>2}_p{}.txt", day, part);

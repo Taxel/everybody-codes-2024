@@ -27,7 +27,7 @@ impl Solution<i32> for Day4 {
             .sorted()
             .collect::<Vec<_>>();
 
-        let mut min = i32::MAX;
+        let mut min;
         let median = nums[nums.len() / 2];
         let eval = |n: i32| nums.iter().map(|num| (n - num).abs()).sum::<i32>();
 

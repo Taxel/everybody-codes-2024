@@ -1,6 +1,6 @@
-use std::collections::VecDeque;
-
+#![allow(unreachable_code)]
 use crate::solution::Solution;
+use std::collections::VecDeque;
 
 pub struct Day2;
 
@@ -22,19 +22,14 @@ fn get_match_mask(line: &str, words: &[&str], is_ring: bool) -> Vec<bool> {
             if line.iter().take(word_len).copied().eq(word.chars()) {
                 // mark first word_len entries in mask as found
 
-                for j in 0..word_len {
-                    mask[j] = true;
+                for item in mask.iter_mut().take(word_len) {
+                    *item = true;
                 }
-            } else if line
-                .iter()
-                .take(word_len)
-                .rev().copied()
-                .eq(word.chars())
-            {
+            } else if line.iter().take(word_len).rev().copied().eq(word.chars()) {
                 // reversed word found
 
-                for j in 0..word_len {
-                    mask[j] = true;
+                for item in mask.iter_mut().take(word_len) {
+                    *item = true;
                 }
             }
             // rotate
@@ -54,7 +49,8 @@ impl Solution<i32> for Day2 {
         let words = lines
             .next()
             .unwrap()
-            .split(':').nth(1)
+            .split(':')
+            .nth(1)
             .unwrap()
             .split(',')
             .collect::<Vec<&str>>();
@@ -75,7 +71,8 @@ impl Solution<i32> for Day2 {
         let words = lines
             .next()
             .unwrap()
-            .split(':').nth(1)
+            .split(':')
+            .nth(1)
             .unwrap()
             .split(',')
             .collect::<Vec<&str>>();
@@ -95,7 +92,8 @@ impl Solution<i32> for Day2 {
         let words = lines
             .next()
             .unwrap()
-            .split(':').nth(1)
+            .split(':')
+            .nth(1)
             .unwrap()
             .split(',')
             .collect::<Vec<&str>>();
@@ -114,8 +112,8 @@ impl Solution<i32> for Day2 {
         // vertical check
         for x in 0..lines[0].len() {
             let mut line = String::with_capacity(lines.len());
-            for y in 0..lines.len() {
-                line.push(lines[y].chars().nth(x).unwrap());
+            for str_line in &lines {
+                line.push(str_line.chars().nth(x).unwrap());
             }
             let rune_mask = get_match_mask(&line, &words, false);
             for (y, is_rune) in rune_mask.iter().enumerate().take(lines.len()) {
