@@ -51,6 +51,6 @@ fn run_day<T: std::fmt::Debug>(solution: impl Solution<T>) {
 }
 
 fn main() {
-    let today = day8::Day8;
+    let today = day9::Day9;
     run_day(today);
 }
