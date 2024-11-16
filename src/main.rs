@@ -1,6 +1,7 @@
 use std::time::Instant;
 
 use solution::Solution;
+/*
 mod day1;
 mod day2;
 mod day3;
@@ -10,6 +11,8 @@ mod day6;
 mod day7;
 mod day8;
 mod day9;
+*/
+mod day10;
 pub mod solution;
 mod utils;
 
@@ -51,6 +54,6 @@ fn run_day<T: std::fmt::Debug>(solution: impl Solution<T>) {
 }
 
 fn main() {
-    let today = day9::Day9;
+    let today = day10::Day10;
     run_day(today);
 }
